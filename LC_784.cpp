@@ -29,7 +29,7 @@ private:
         } 
     }
 };
-int main()
+int main(void)
 {
     string s="a1b2";
     Solution sol;
