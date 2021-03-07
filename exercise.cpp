@@ -1,53 +1,61 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-class Solution {
+class Solution{
 public:
-    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
-        vector<vector<int>> res;
-        vector<int> temp;
-        //vector<int> nums=candidates;
-        sort(candidates.begin(),candidates.end());
-        // int i;
-        // for(i=0;i<candidates.size();++i)
-        // {
-        //     if(candidates[i]>target)break;
-        // }
-        // candidates.erase(candidates.begin()+i,candidates.end());
-        backtracking(res,temp,candidates,target,0);
-        //sort(res.begin(),res.end());
-        //res.erase(unique(res.begin(),res.end()),res.end());
-        return res;
-    }
-private:
-    void backtracking(vector<vector<int>>& res,vector<int>& temp,vector<int>& nums,int target,int start){
-        if(target==0)
+    string profession(vector<pair<int,string>>& persons,vector<pair<int,int>>& instructions){
+        int index=0;
+        for(int i=0;i<instructions.size();++i)
         {
-            res.push_back(temp);
-            return;
+            while(index>=persons.size())
+            {
+                index%=persons.size();
+            }
+            if(persons[index].first==0)
+            {
+                if(instructions[i].first==0)
+                {
+                    index+=(persons.size()-(instructions[i].second%persons.size()));
+                }
+                else
+                {
+                    index+=(instructions[i].second%persons.size());
+                }
+            }
+            else
+            {
+                if(instructions[i].first==0)
+                {
+                    index+=(instructions[i].second%persons.size());
+                }
+                else
+                {
+                    index+=(persons.size()-(instructions[i].second%persons.size()));
+                }
+            }
         }
-        for(int i=start;i<nums.size();++i)
-        {
-            if(i>start&&nums[i]==nums[i-1])continue;
-            if(nums[i]>target)continue;
-            temp.push_back(nums[i]);
-            backtracking(res,temp,nums,target-nums[i],i+1);
-            temp.pop_back();
-        }
+        return persons[index].second;
     }
 };
 int main()
 {
-    vector<int> candidates={14,6,25,9,30,20,33,34,28,30,16,12,31,9,9,12,34,16,25,32,8,7,30,12,33,20,21,29,24,17,27,34,11,17,30,6,32,21,27,17,16,8,24,12,12,28,11,33,10,32,22,13,34,18,12};
-    int target=27;
-    Solution s;
-    vector<vector<int>> res=s.combinationSum2(candidates,target);
-    for(int i=0;i<res.size();++i)
+    int n,m;
+    cin>>n>>m;
+    vector<pair<int,string>> persons;
+    vector<pair<int,int>> instructions;
+    for(int i=0;i<n;++i)
     {
-        for(int j=0;j<res[i].size();++j)
-        {
-            cout<<res[i][j]<<" ";
-        }
-        cout<<endl;
+        int a;
+        string b;
+        cin>>a>>b;
+        persons.push_back(make_pair(a,b));
     }
+    for(int i=0;i<m;++i)
+    {
+        int a,b;
+        cin>>a>>b;
+        instructions.push_back(make_pair(a,b));
+    }
+    Solution s;
+    cout<<s.profession(persons,instructions);
     return 0;
 }
